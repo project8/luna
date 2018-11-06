@@ -1,9 +1,0 @@
-FROM project8/p8compute:v0.1.0_test
-
-ENV CVMFS_PATH=/cvmfs/hep.pnnl.gov/project8
-
-RUN mkdir -p /cvmfs/hep.pnnl.gov &&\
-    cd $P8COMPUTE_BUILD_PREFIX &&\
-	echo 'source $P8COMPUTE_BUILD_PREFIX/setup.sh' > setup_cvmfs.sh&&\
-    echo 'ln -sf /usr/local/p8 $CVMFS_PATH' >> setup_cvmfs.sh &&\
-    /bin/true
