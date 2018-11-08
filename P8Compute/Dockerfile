@@ -14,7 +14,7 @@ COPY --from=project8/katydid:v2.14.0 /usr/local/p8/katydid/$katydid_tag /usr/loc
 # directory and setup script
 RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     cd $P8COMPUTE_BUILD_PREFIX &&\
-    echo 'ln -sf $P8COMPUTE_BUILD_PREFIX $P8COMPUTE_BUILD_PREFIX/../current' > setup.sh &&\
+    echo 'ln -sf $P8COMPUTE_BUILD_PREFIX $P8COMPUTE_BUILD_PREFIX/../current || /bin/true' > setup.sh &&\
     echo "source /usr/local/p8/locust/${locust_tag}/setup.sh" >> setup.sh &&\ 
     echo "source /usr/local/p8/katydid/${katydid_tag}/setup.sh" >> setup.sh &&\ 
     /bin/true
