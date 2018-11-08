@@ -10,6 +10,12 @@ To run the server:
 host> docker run -p 8888:8888 project8/p8compute-jupyter:[tag]
 ```
 
+To run the server and mount a directory on the host into the container:
+
+```
+host> docker run -p 8888:8888 -v /host/path/to/data:/p8compute/path/to/data project8/p8compute-jupyter:[tag]
+```
+
 To open the notebook:
 
 1. Once the Jupyter server starts, it should present you with a URL to paste into your browser.  Copy that URL.
