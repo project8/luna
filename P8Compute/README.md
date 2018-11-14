@@ -1,6 +1,6 @@
 # P8Compute
 
-## Running the Jupyter Notebook Server
+## Accessing the Container & Running the Jupyter Notebook Server
 
 The `project8/p8compute-jupyter` container includes root, python, Katydid and Locust packages. The `project8/p8compute-jupyter` container will run a Jupyter notebook that has access to Project 8 python resources. Choose accordingly to your needs.
 
@@ -20,6 +20,9 @@ To run the server and mount a directory on the host into the container:
 ```
 host> docker run -p 8888:8888 -v /host/path/to/data:/p8compute/path/to/data project8/p8compute-jupyter:[tag]
 ```
+The tags may be found on the project8/p8compute dockerhub page: https://hub.docker.com/r/project8/p8compute/.
+
+
 
 Once in the container, setup the environment by:
 ```
@@ -35,5 +38,3 @@ To open the notebook:
     ```
     http://localhost:8888/?token=[hash string]
     ```
-    
-The tags may be found on the project8/p8compute dockerhub page: https://hub.docker.com/r/project8/p8compute/
