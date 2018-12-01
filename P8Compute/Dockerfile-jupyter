@@ -1,4 +1,4 @@
-FROM project8/p8compute:v0.2.0
+FROM project8/p8compute:v0.2.1
 
 RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
     pip3 install --upgrade pip &&\
@@ -10,4 +10,6 @@ RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
 
 EXPOSE 8888
 
-CMD source $P8COMPUTE_BUILD_PREFIX/setup.sh && jupyter notebook --no-browser --allow-root --ip=0.0.0.0
+CMD source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
+    source $KATYDID_BUILD_PREFIX/bin/this_katydid.sh &&\
+    jupyter notebook --no-browser --allow-root --ip=0.0.0.0
