@@ -1,0 +1,11 @@
+language: python
+
+services:
+  - docker
+
+script:
+  - docker build -t project8/p8compute:travis-test -f P8Compute/Dockerfile .
+
+
+#  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#  - docker push project8/p8compute:travis-test
