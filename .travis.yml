@@ -10,5 +10,6 @@ env:
 
 script:
   - docker build -t project8/p8compute:travis-test -f P8Compute/Dockerfile .
-  - echo "$DOCKER_PASSWORD" | docker login --username $DOCKER_USERNAME --password-stdin
+  - echo $DOCKER_USERNAME
+  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
   - docker push project8/p8compute:travis-test
