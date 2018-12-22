@@ -29,6 +29,8 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     echo "source /usr/local/p8/mermithid/${mermithid_tag}/bin/this_phylloxera.sh" >> setup.sh &&\
     mkdir -p /cvmfs/hep.pnnl.gov &&\
     ln -sf /usr/local/p8 $CVMFS_PATH &&\
+    chmod 777 /usr/local/p8/locust /usr/local/p8/katydid /usr/local/p8/mermithid \
+              /usr/local/p8/locust/$locust_tag /usr/local/p8/katydid/$katydid_tag /usr/local/p8/mermithid/$mermithid_tag &&\
     /bin/true
 
 
@@ -40,5 +42,7 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
 COPY --from=project8/p8compute:v0.1.9 /usr/local/p8/locust/v1.8.0 /usr/local/p8/locust/v1.8.0
 COPY --from=project8/p8compute:v0.1.9 /usr/local/p8/katydid/v2.14.0 /usr/local/p8/katydid/v2.14.0
 COPY --from=project8/p8compute:v0.1.9 /usr/local/p8/compute/v0.1.9 /usr/local/p8/compute/v0.1.9
-# p8compute_dependencies:v0.2.0 (used in p8compute:v0.1.9) is essentially the same as v0.3.0, so use a symlink
-RUN ln -s /usr/local/p8/common/v0.3.0 /usr/local/p8/common/v0.2.0
+# p8compute_dependencies:v0.2.0 (used in p8compute:v0.1.9) is essentially the same as v0.4.0, so use a symlink
+RUN ln -s /usr/local/p8/common/v0.4.0 /usr/local/p8/common/v0.2.0 &&\
+    chmod 777 /usr/local/p8/locust/v1.8.0 /usr/local/p8/katydid/v2.14.0 /usr/local/p8/compute/v0.1.9 &&\
+    /bin/true
