@@ -1,6 +1,21 @@
 Software Versions
 =================
 
+Luna v0.X.Y
+-----------
+
+Dependencies
+~~~~~~~~~~~~
+
+* Same as Luna v0.2.0
+* Pystan v2.18.1.0
+
+P8Compute
+~~~~~~~~~
+
+* Mermithid: v1.1.7
+
+
 Luna v0.4.0
 -----------
 
