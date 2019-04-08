@@ -4,8 +4,8 @@ ENV P8COMPUTE_TAG=v0.4.0
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Locust
-ARG locust_tag=v1.9.2
-COPY --from=project8/locust_mc:v1.9.2 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+ARG locust_tag=v1.10.3
+COPY --from=project8/locust_mc:v1.10.3 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 
 # Katydid
 ARG katydid_tag=v2.15.2
