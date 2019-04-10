@@ -1,6 +1,6 @@
-FROM project8/p8compute_dependencies:v0.4.1
+FROM project8/p8compute_dependencies:v0.5.0
 
-ENV P8COMPUTE_TAG=v0.4.1
+ENV P8COMPUTE_TAG=v0.5.0
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Locust
