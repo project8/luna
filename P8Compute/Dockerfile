@@ -1,19 +1,19 @@
-FROM project8/p8compute_dependencies:v0.4.0
+FROM project8/p8compute_dependencies:v0.5.0
 
-ENV P8COMPUTE_TAG=v0.4.0
+ENV P8COMPUTE_TAG=v0.5.0
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Locust
-ARG locust_tag=v1.9.2
-COPY --from=project8/locust_mc:v1.9.2 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+ARG locust_tag=v1.11.0
+COPY --from=project8/locust_mc:v1.11.0 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 
 # Katydid
-ARG katydid_tag=v2.15.2
-COPY --from=project8/katydid:v2.15.2 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
+ARG katydid_tag=v2.15.3
+COPY --from=project8/katydid:v2.15.3 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
 
 # Mermithid
-ARG mermithid_tag=v1.1.5
-COPY --from=project8/mermithid:v1.1.5 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
+ARG mermithid_tag=v1.1.8
+COPY --from=project8/mermithid:v1.1.8 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
 
 # P8Compute directory and setup script
 # Fake CVMFS directory to match previous directory structure
