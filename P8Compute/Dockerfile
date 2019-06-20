@@ -17,6 +17,7 @@ COPY --from=project8/mermithid:v1.1.8 /usr/local/p8/mermithid/$mermithid_tag /us
 
 # P8Compute directory and setup script
 # Fake CVMFS directory to match previous directory structure
+# Temporary addition, 6/20/19: Added pip installation of h5py.  This should be moved to dependencies.
 ENV CVMFS_PATH=/cvmfs/hep.pnnl.gov/project8
 RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     chmod -R 777 $P8COMPUTE_BUILD_PREFIX/.. &&\
@@ -31,6 +32,9 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     ln -sf /usr/local/p8 $CVMFS_PATH &&\
     chmod 777 /usr/local/p8/locust /usr/local/p8/katydid /usr/local/p8/mermithid \
               /usr/local/p8/locust/$locust_tag /usr/local/p8/katydid/$katydid_tag /usr/local/p8/mermithid/$mermithid_tag &&\
+    pip3 install --upgrade pip &&\
+    pip3 install \
+        'h5py' &&\
     /bin/true
 
 
