@@ -34,10 +34,6 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     ln -sf /usr/local/p8 $CVMFS_PATH &&\
     chmod 777 /usr/local/p8/locust /usr/local/p8/katydid /usr/local/p8/mermithid \
               /usr/local/p8/locust/$locust_tag /usr/local/p8/katydid/$katydid_tag /usr/local/p8/mermithid/$mermithid_tag &&\
-    source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
-    pip3 install --upgrade pip &&\
-    pip3 install \
-        'h5py' &&\
     /bin/true
 
 
