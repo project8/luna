@@ -4,7 +4,6 @@ RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
     pip3 install --upgrade pip &&\
     pip3 install \
     	'scipy' \
-    	'matplotlib' \
     	'jupyter' &&\
     /bin/true
 
