@@ -1,10 +1,9 @@
-FROM project8/p8compute:v0.6.0
+FROM project8/p8compute:v0.7.0
 
 RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
     pip3 install --upgrade pip &&\
     pip3 install \
     	'scipy' \
-    	'matplotlib' \
     	'jupyter' &&\
     /bin/true
 
