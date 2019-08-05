@@ -1,6 +1,6 @@
 FROM project8/p8compute_dependencies:v0.7.0
 
-ENV P8COMPUTE_TAG=v0.7.0
+ENV P8COMPUTE_TAG=v0.8.0
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Katydid
@@ -8,12 +8,12 @@ ARG katydid_tag=v2.17.0
 COPY --from=project8/katydid:v2.17.0 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
 
 # Locust
-#ARG locust_tag=v1.13.1
-#COPY --from=project8/locust_mc:v1.13.1 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+ARG locust_tag=v1.13.3
+COPY --from=project8/locust_mc:v1.13.3 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 
 # Mermithid
-ARG mermithid_tag=v1.1.9
-COPY --from=project8/mermithid:v1.1.9 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
+ARG mermithid_tag=v1.1.10
+COPY --from=project8/mermithid:v1.1.10 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
 
 # Psyllid
 ARG psyllid_tag=v1.12.1
@@ -27,7 +27,7 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     cd $P8COMPUTE_BUILD_PREFIX &&\
     echo 'ln -sfT $P8COMPUTE_BUILD_PREFIX $P8COMPUTE_BUILD_PREFIX/../current' > setup.sh &&\
     echo "source /usr/local/p8/katydid/${katydid_tag}/setup.sh" >> setup.sh &&\ 
-    #echo "source /usr/local/p8/locust/${locust_tag}/setup.sh" >> setup.sh &&\ 
+    echo "source /usr/local/p8/locust/${locust_tag}/setup.sh" >> setup.sh &&\ 
     echo "source /usr/local/p8/mermithid/${mermithid_tag}/setup.sh" >> setup.sh &&\
     echo "source /usr/local/p8/mermithid/${mermithid_tag}/bin/this_cicada.sh" >> setup.sh &&\
     echo "source /usr/local/p8/mermithid/${mermithid_tag}/bin/this_phylloxera.sh" >> setup.sh &&\
@@ -35,11 +35,11 @@ RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     mkdir -p /cvmfs/hep.pnnl.gov &&\
     ln -sf /usr/local/p8 $CVMFS_PATH &&\
     chmod 777 /usr/local/p8/katydid \
-              #/usr/local/p8/locust \
+              /usr/local/p8/locust \
               /usr/local/p8/mermithid \
               /usr/local/p8/psyllid \
               /usr/local/p8/katydid/$katydid_tag \ 
-              #/usr/local/p8/locust/$locust_tag \
+              /usr/local/p8/locust/$locust_tag \
               /usr/local/p8/mermithid/$mermithid_tag \
               /usr/local/p8/psyllid/$psyllid_tag &&\
     /bin/true
