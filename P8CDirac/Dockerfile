@@ -1,4 +1,4 @@
-FROM project8/p8compute:v0.7.0
+FROM project8/p8compute:v0.8.0
 
 # The purpose of this container is to comment out the symlink creation in the setup.sh scripts
 # For now these versions are hard-coded here, but we really should find a better way to do it.
