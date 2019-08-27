@@ -1,23 +1,23 @@
-FROM project8/p8compute_dependencies:v0.7.0
+FROM project8/p8compute_dependencies:v0.9.0
 
-ENV P8COMPUTE_TAG=v0.8.0
+ENV P8COMPUTE_TAG=v0.9.0
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Katydid
-ARG katydid_tag=v2.17.0
-COPY --from=project8/katydid:v2.17.0 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
+ARG katydid_tag=v2.17.1
+COPY --from=project8/katydid:v2.17.1 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
 
 # Locust
-ARG locust_tag=v1.13.3
-COPY --from=project8/locust_mc:v1.13.3 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+ARG locust_tag=v1.14.2
+COPY --from=project8/locust_mc:v1.14.2 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 
 # Mermithid
-ARG mermithid_tag=v1.1.10
-COPY --from=project8/mermithid:v1.1.10 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
+ARG mermithid_tag=v1.1.11
+COPY --from=project8/mermithid:v1.1.11 /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
 
 # Psyllid
-ARG psyllid_tag=v1.12.1
-COPY --from=project8/psyllid:v1.12.1-p8compute /usr/local/p8/psyllid/$psyllid_tag /usr/local/p8/psyllid/$psyllid_tag
+ARG psyllid_tag=v1.12.2
+COPY --from=project8/psyllid:v1.12.2-p8compute /usr/local/p8/psyllid/$psyllid_tag /usr/local/p8/psyllid/$psyllid_tag
 
 # P8Compute directory and setup script
 # Fake CVMFS directory to match previous directory structure
