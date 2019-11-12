@@ -4,7 +4,7 @@ FROM project8/p8compute:v0.9.4
 # For now these versions are hard-coded here, but we really should find a better way to do it.
 RUN sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/common/v0.9.0/setup.sh &&\
     sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/katydid/v2.17.2/setup.sh &&\
-    sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/locust/v1.15.5/setup.sh &&\
+    sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/locust/v1.15.6/setup.sh &&\
     sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/mermithid/v1.1.11/setup.sh &&\
     sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/psyllid/v1.12.2/setup.sh &&\
     sed -i -e 's/ln -s/#ln -s/' /usr/local/p8/compute/v0.9.4/setup.sh &&\
