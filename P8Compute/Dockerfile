@@ -1,15 +1,15 @@
 FROM project8/p8compute_dependencies:v0.9.0
 
-ENV P8COMPUTE_TAG=v0.10.0
+ENV P8COMPUTE_TAG=v0.10.1
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 # Katydid
-ARG katydid_tag=v2.17.2
-COPY --from=project8/katydid:v2.17.2 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
+ARG katydid_tag=v2.18.0
+COPY --from=project8/katydid:v2.18.0 /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
 
 # Locust
-ARG locust_tag=v2.0.0
-COPY --from=project8/locust_mc:v2.0.0 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+ARG locust_tag=v2.1.2
+COPY --from=project8/locust_mc:v2.1.2 /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 
 # Mermithid
 ARG mermithid_tag=v1.2.2
