@@ -1,4 +1,4 @@
-FROM project8/p8compute:v0.10.0
+FROM project8/p8compute:v0.10.1
 
 RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
     pip3 install --upgrade pip &&\
