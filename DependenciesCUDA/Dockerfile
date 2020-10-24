@@ -1,5 +1,8 @@
 FROM project8/p8compute_dependencies:v0.9.0
 
+# CUDA Dockerfile contents from https://gitlab.com/nvidia/container-images/cuda/-/tree/master/dist/11.1/centos7-x86_64
+# As of 10/23/2020, version 11.1 is the latest distribution
+
 #
 # base
 #
