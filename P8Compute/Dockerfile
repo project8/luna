@@ -2,27 +2,33 @@ ARG IMG_USER=project8
 ARG IMG_REPO=p8compute_dependencies
 ARG IMG_TAG=v1.0.0
 
+ARG katydid_tag=v2.18.0
+ARG locust_tag=v2.2.0
+ARG mermithid_tag=v1.2.2
+ARG psyllid_tag=v1.12.2
+
+# Katydid
+FROM ${IMG_USER}/katydid:${katydid_tag} AS katydid
+
+# Locust
+FROM ${IMG_USER}/locust_mc:${locust_tag} AS locust
+
+# Mermithid
+FROM ${IMG_USER}/mermithid:${mermithid_tag} AS mermithid
+
+# Psyllid
+FROM ${IMG_USER}/psyllid:${psyllid_tag} AS psyllid
+
 FROM ${IMG_USER}/${IMG_REPO}:${IMG_TAG}
 
 ARG P8COMPUTE_TAG=beta
 ENV P8COMPUTE_TAG=${P8COMPUTE_TAG}
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
-# Katydid
-ARG katydid_tag=v2.18.0
-COPY --from=project8/katydid:${katydid_tag} /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
-
-# Locust
-ARG locust_tag=v2.2.0
-COPY --from=project8/locust_mc:${locust_tag} /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
-
-# Mermithid
-ARG mermithid_tag=v1.2.2
-COPY --from=project8/mermithid:${mermithid_tag} /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
-
-# Psyllid
-ARG psyllid_tag=v1.12.2
-COPY --from=project8/psyllid:${psyllid_tag} /usr/local/p8/psyllid/$psyllid_tag /usr/local/p8/psyllid/$psyllid_tag
+COPY --from=katydid /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
+COPY --from=locust /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
+COPY --from=mermithid /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
+COPY --from=psyllid /usr/local/p8/psyllid/$psyllid_tag /usr/local/p8/psyllid/$psyllid_tag
 
 # P8Compute directory and setup script
 # Fake CVMFS directory to match previous directory structure
