@@ -1,0 +1,118 @@
+
+name: Publish
+
+on:
+
+  push:
+    branches: [ main, develop, feature/github-actions]
+    tags: 'v*.*.*'
+    
+  pull_request:
+    branches: '*'
+    types: opened
+  
+  release:
+    types: [published]
+
+  workflow_dispatch:
+  
+  repository_dispatch:
+    types: [release-event]
+
+jobs:
+
+  init:
+    runs-on: ubuntu-latest
+    outputs:
+      luna_version: ${{ steps.setversion.outputs.luna_version }}
+      katydid_version: ${{ steps.setversion.outputs.katydid_version }}
+      psyllid_version: ${{ steps.setversion.outputs.psyllid_version }}
+      locust_version: ${{ steps.setversion.outputs.locust_version }}
+      mermithid_version: ${{ steps.setversion.outputs.mermithid_version }}
+
+    steps:
+      - name: Cancel previous workflow
+        uses: styfle/cancel-workflow-action@0.4.0
+        with:
+          access_token: ${{ github.token }}
+          
+      - name: Set Versions
+        id: setversion
+        run: |
+          git clone https://github.com/project8/luna_base.git
+          cd luna_base
+          echo "::set-output name=luna_version::$(git describe --abbrev=0 --tags)"
+          cd ..
+          
+          git clone https://github.com/project8/katydid.git
+          cd katydid
+          echo "::set-output name=katydid_version::$(git describe --abbrev=0 --tags)"
+          cd ..
+          
+          git clone https://github.com/project8/psyllid.git
+          cd psyllid
+          echo "::set-output name=psyllid_version::$(git describe --abbrev=0 --tags)"
+          cd ..
+          
+          git clone https://github.com/project8/locust_mc.git
+          cd locust_mc
+          echo "::set-output name=locust_version::$(git describe --abbrev=0 --tags)"
+          cd ..
+          
+          git clone https://github.com/project8/mermithid.git
+          cd mermithid
+          echo "::set-output name=mermithid_version::$(git describe --abbrev=0 --tags)"
+          cd ..
+
+  publish:
+
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+    
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          
+      - name: Docker meta
+        id: docker_meta
+        uses: docker/metadata-action@v3
+        with:
+          images: project8/p8compute
+          
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        
+      - name: Set up Docker Buildx
+        id: setup_buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          buildkitd-flags: --debug
+          
+      - name: List platforms
+        run: | 
+            echo Platforms: ${{ steps.setup_buildx.outputs.platforms }}
+        
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+        
+      - name: Push to Docker Hub
+        id: build_push
+        uses: docker/build-push-action@v2
+        with:
+          context: P8Compute/
+          file: P8Compute/Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
+          build-args: |
+            IMG_USER=project8
+            IMG_REPO=p8compute_dependencies
+            IMG_TAG=${{ needs.init.outputs.luna_version }}
+            locust_tag=${{ needs.init.outputs.locust_version }}
+            katydid_tag=${{ needs.init.outputs.katydid_version }}
+            psyllid_tag=${{ needs.init.outputs.psyllid_version }}
+            mermithid_tag=${{ needs.init.outputs.mermithid_version }}
+          tags: ${{ steps.docker_meta.outputs.tags }}
