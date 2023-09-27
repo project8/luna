@@ -7,7 +7,7 @@ ARG locust_repo=ghcr.io/project8/locust_mc
 ARG locust_tag=v2.2.0
 ARG mermithid_repo=ghcr.io/project8/mermithid
 ARG mermithid_tag=v1.2.2
-ARG psyllid_tag=ghcr.io/project8/psyllid
+ARG psyllid_repo=ghcr.io/project8/psyllid
 ARG psyllid_tag=v1.12.2
 
 # Katydid
