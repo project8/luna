@@ -109,8 +109,8 @@ jobs:
           file: P8Compute/Dockerfile
           push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
-            IMG_REPO=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
-            IMG_TAG=${{ needs.init.outputs.luna_version }}
+            img_repo=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
+            img_tag=${{ needs.init.outputs.luna_version }}
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
             psyllid_tag=${{ needs.init.outputs.psyllid_version }}
