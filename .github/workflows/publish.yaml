@@ -2,22 +2,16 @@
 name: Publish
 
 on:
-
-  push:
-    branches: [ main, develop, feature/github-actions]
-    tags: 'v*.*.*'
-    
   pull_request:
-    branches: '*'
-    types: opened
-  
-  release:
-    types: [published]
-
+  push:
+    branches: [main, develop]
+    tags: ['*']
   workflow_dispatch:
-  
-  repository_dispatch:
-    types: [release-event]
+
+env:
+  REGISTRY: ghcr.io
+  BASE_IMG_REPO: project8/luna_base
+  BASE_IMG_TAG: v1.3.3
 
 jobs:
 
@@ -31,11 +25,6 @@ jobs:
       mermithid_version: ${{ steps.setversion.outputs.mermithid_version }}
 
     steps:
-      - name: Cancel previous workflow
-        uses: styfle/cancel-workflow-action@0.4.0
-        with:
-          access_token: ${{ github.token }}
-          
       - name: Set Versions
         id: setversion
         run: |
@@ -72,45 +61,55 @@ jobs:
     steps:
     
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
           
       - name: Docker meta
         id: docker_meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
-          images: project8/p8compute
-          
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          flavor: |
+            latest=auto
+            suffix=${{ matrix.tag-suffix }},onlatest=true
+          tags: |
+            type=semver,pattern={{raw}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+      - name: Get previous tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        id: tag_name
+        with:
+          fallback: beta
+
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v3
         
       - name: Set up Docker Buildx
         id: setup_buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
         with:
           buildkitd-flags: --debug
-          
-      - name: List platforms
-        run: | 
-            echo Platforms: ${{ steps.setup_buildx.outputs.platforms }}
-        
-      - name: Log in to Docker Hub
-        uses: docker/login-action@v1
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-        
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
       - name: Push to Docker Hub
         id: build_push
         uses: docker/build-push-action@v2
         with:
           context: P8Compute/
           file: P8Compute/Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
+          push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
-            IMG_USER=project8
-            IMG_REPO=p8compute_dependencies
+            IMG_USER=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
             IMG_TAG=${{ needs.init.outputs.luna_version }}
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
