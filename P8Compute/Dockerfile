@@ -1,5 +1,5 @@
-ARG IMG_REPO=project8/luna_base
-ARG IMG_TAG=v1.0.0
+ARG img_repo=project8/luna_base
+ARG img_tag=v1.0.0
 
 ARG katydid_repo=ghcr.io/project8/katydid
 ARG katydid_tag=v2.18.0
@@ -20,9 +20,9 @@ FROM ${locust_repo}:${locust_tag} AS locust
 FROM ${mermithid_repo}:${mermithid_tag} AS mermithid
 
 # Psyllid
-FROM ${psyllid_tag}:${psyllid_tag} AS psyllid
+FROM ${psyllid_repo}:${psyllid_tag} AS psyllid
 
-FROM ${IMG_REPO}:${IMG_TAG}
+FROM ${img_repo}:${img_tag}
 
 ARG p8compute_tag=beta
 ENV P8COMPUTE_TAG=${p8compute_tag}
