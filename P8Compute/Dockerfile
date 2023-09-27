@@ -5,10 +5,10 @@ ARG katydid_repo=ghcr.io/project8/katydid
 ARG katydid_tag=v2.18.0
 ARG locust_repo=ghcr.io/project8/locust_mc
 ARG locust_tag=v2.2.0
-ARG mermithid_repo=ghcr.io/project8/mermithid
+ARG mermithid_repo=project8/mermithid
 ARG mermithid_tag=v1.2.2
 ARG psyllid_repo=ghcr.io/project8/psyllid
-ARG psyllid_tag=v1.12.2
+ARG psyllid_tag=v2.2.0
 
 # Katydid
 FROM ${katydid_repo}:${katydid_tag} AS katydid
