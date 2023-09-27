@@ -20,7 +20,6 @@ jobs:
     outputs:
       luna_version: ${{ steps.setversion.outputs.luna_version }}
       katydid_version: ${{ steps.setversion.outputs.katydid_version }}
-      psyllid_version: ${{ steps.setversion.outputs.psyllid_version }}
       locust_version: ${{ steps.setversion.outputs.locust_version }}
       mermithid_version: ${{ steps.setversion.outputs.mermithid_version }}
 
@@ -36,11 +35,6 @@ jobs:
           git clone https://github.com/project8/katydid.git
           cd katydid
           echo "::set-output name=katydid_version::$(git describe --abbrev=0 --tags)"
-          cd ..
-          
-          git clone https://github.com/project8/psyllid.git
-          cd psyllid
-          echo "::set-output name=psyllid_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/locust_mc.git
@@ -113,7 +107,6 @@ jobs:
             img_tag=${{ needs.init.outputs.luna_version }}
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
-            psyllid_tag=${{ needs.init.outputs.psyllid_version }}
             mermithid_tag=${{ needs.init.outputs.mermithid_version }}
             p8compute_tag=${{ steps.tag_name.outputs.tag }}
           tags: ${{ steps.docker_meta.outputs.tags }}
