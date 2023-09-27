@@ -1,22 +1,26 @@
 ARG IMG_REPO=project8/luna_base
 ARG IMG_TAG=v1.0.0
 
+ARG katydid_repo=ghcr.io/project8/katydid
 ARG katydid_tag=v2.18.0
+ARG locust_repo=ghcr.io/project8/locust_mc
 ARG locust_tag=v2.2.0
+ARG mermithid_repo=ghcr.io/project8/mermithid
 ARG mermithid_tag=v1.2.2
+ARG psyllid_tag=ghcr.io/project8/psyllid
 ARG psyllid_tag=v1.12.2
 
 # Katydid
-FROM ${IMG_USER}/katydid:${katydid_tag} AS katydid
+FROM ${katydid_repo}:${katydid_tag} AS katydid
 
 # Locust
-FROM ${IMG_USER}/locust_mc:${locust_tag} AS locust
+FROM ${locust_repo}:${locust_tag} AS locust
 
 # Mermithid
-FROM ${IMG_USER}/mermithid:${mermithid_tag} AS mermithid
+FROM ${mermithid_repo}:${mermithid_tag} AS mermithid
 
 # Psyllid
-FROM ${IMG_USER}/psyllid:${psyllid_tag} AS psyllid
+FROM ${psyllid_tag}:${psyllid_tag} AS psyllid
 
 FROM ${IMG_REPO}:${IMG_TAG}
 
