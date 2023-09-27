@@ -1,5 +1,4 @@
-ARG IMG_USER=project8
-ARG IMG_REPO=p8compute_dependencies
+ARG IMG_REPO=project8/luna_base
 ARG IMG_TAG=v1.0.0
 
 ARG katydid_tag=v2.18.0
@@ -19,10 +18,10 @@ FROM ${IMG_USER}/mermithid:${mermithid_tag} AS mermithid
 # Psyllid
 FROM ${IMG_USER}/psyllid:${psyllid_tag} AS psyllid
 
-FROM ${IMG_USER}/${IMG_REPO}:${IMG_TAG}
+FROM ${IMG_REPO}:${IMG_TAG}
 
-ARG P8COMPUTE_TAG=beta
-ENV P8COMPUTE_TAG=${P8COMPUTE_TAG}
+ARG p8compute_tag=beta
+ENV P8COMPUTE_TAG=${p8compute_tag}
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
 
 COPY --from=katydid /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
