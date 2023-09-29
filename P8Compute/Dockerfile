@@ -1,11 +1,11 @@
-ARG img_repo=project8/luna_base
-ARG img_tag=v1.0.0
+ARG img_repo=ghcr.io/project8/luna_base
+ARG img_tag=v1.3.3
 
 ARG katydid_repo=ghcr.io/project8/katydid
-ARG katydid_tag=v2.18.0
+ARG katydid_tag=v2.19.0
 ARG locust_repo=ghcr.io/project8/locust_mc
-ARG locust_tag=v2.2.0
-ARG mermithid_repo=project8/mermithid
+ARG locust_tag=v2.5.3
+ARG mermithid_repo=docker.io/project8/mermithid
 ARG mermithid_tag=v1.2.2
 
 # Katydid
