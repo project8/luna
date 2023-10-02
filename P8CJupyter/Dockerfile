@@ -1,4 +1,7 @@
-FROM project8/p8compute:v0.10.2
+ARG img_repo=ghcr.io/project8/luna_base
+ARG img_tag=v1.3.3
+
+FROM ${img_repo}:${img_tag}
 
 RUN source $P8COMPUTE_BUILD_PREFIX/setup.sh &&\
     pip3 install --upgrade pip &&\
