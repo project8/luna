@@ -85,12 +85,6 @@ jobs:
           regex: '^ghcr.io\/project8\/luna:(\S*)$'
           flags: gm
 
-      - name: Get previous tag
-        uses: "WyriHaximus/github-action-get-previous-tag@v1"
-        id: tag_name
-        with:
-          fallback: beta
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         
@@ -122,7 +116,7 @@ jobs:
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
             mermithid_tag=${{ needs.init.outputs.mermithid_version }}
-            p8compute_tag=${{ steps.tag_name.outputs.tag }}
+            p8compute_tag=${{ steps.get_dir_name.outputs.group1 }}
           tags: ${{ steps.docker_meta.outputs.tags }}
 
       - name: Build and Push Luna-Jupyter
@@ -136,7 +130,7 @@ jobs:
           #push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
-            img_tag=${{ steps.tag_name.outputs.tag }}
+            img_tag=${{ steps.get_dir_name.outputs.group1 }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
 
 #            img_tag=${{ steps.tag_name.outputs.tag }}
