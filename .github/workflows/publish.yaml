@@ -60,6 +60,10 @@ jobs:
         with:
           submodules: recursive
           
+      # type=semver,pattern={{raw}} -- used only on push tag events; gives us the `vX.Y.Z`` tag
+      # ref,event=branch -- used only on pull_request events; gives us a `pr-X`` tag
+      # ref, event=pr -- used only on push events; gives us main and develop tags
+      # ref, raw,value=latest,... -- restricted to only main-branch push events; gives us the `latest` tag
       - name: Docker meta
         id: docker_meta
         uses: docker/metadata-action@v5
@@ -73,6 +77,13 @@ jobs:
             type=ref,event=branch
             type=ref,event=pr
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+      - uses: actions-ecosystem/action-regex-match@v2
+        id: get_dir_name
+        with:
+          text: ${{ steps.docker_meta.outputs.tags[0] }}
+          regex: '^ghcr.io\/project8\/luna:(\S*)$'
+          flags: gm
 
       - name: Get previous tag
         uses: "WyriHaximus/github-action-get-previous-tag@v1"
@@ -125,5 +136,7 @@ jobs:
           #push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
-            img_tag=${{ steps.tag_name.outputs.tag }}
+            img_tag=${{  }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
+
+#            img_tag=${{ steps.tag_name.outputs.tag }}
