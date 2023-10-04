@@ -19,36 +19,33 @@ FROM ${mermithid_repo}:${mermithid_tag} AS mermithid
 
 FROM ${img_repo}:${img_tag}
 
+# We repeat the version ARGs here so that we get their values from the pre-FROM ARGs
+ARG katydid_tag
+ARG locust_tag
+ARG mermithid_tag
+
 ARG p8compute_tag=beta
 ENV P8COMPUTE_TAG=${p8compute_tag}
 ENV P8COMPUTE_BUILD_PREFIX=/usr/local/p8/compute/$P8COMPUTE_TAG
-
-ENV KATYDID_TAG=${katydid_tag}
-ENV LOCUST_TAG=${locust_tag}
-ENV MERMITHID_TAG=${mermithid_tag}
 
 COPY --from=katydid /usr/local/p8/katydid/$katydid_tag /usr/local/p8/katydid/$katydid_tag
 COPY --from=locust /usr/local/p8/locust/$locust_tag /usr/local/p8/locust/$locust_tag
 COPY --from=mermithid /usr/local/p8/mermithid/$mermithid_tag /usr/local/p8/mermithid/$mermithid_tag
 
 # P8Compute directory and setup script
-# Fake CVMFS directory to match previous directory structure
-ENV CVMFS_PATH=/cvmfs/hep.pnnl.gov/project8
 RUN mkdir -p $P8COMPUTE_BUILD_PREFIX &&\
     chmod -R 777 $P8COMPUTE_BUILD_PREFIX/.. &&\
     cd $P8COMPUTE_BUILD_PREFIX &&\
     echo 'ln -sfT $P8COMPUTE_BUILD_PREFIX $P8COMPUTE_BUILD_PREFIX/../current' > setup.sh &&\
-    echo "source /usr/local/p8/katydid/${KATYDID_TAG}/setup.sh" >> setup.sh &&\ 
-    echo "source /usr/local/p8/locust/${LOCUST_TAG}/setup.sh" >> setup.sh &&\ 
-    echo "source /usr/local/p8/mermithid/${MERMITHID_TAG}/setup.sh" >> setup.sh &&\
-    echo "source /usr/local/p8/mermithid/${MERMITHID_TAG}/bin/this_cicada.sh" >> setup.sh &&\
-    echo "source /usr/local/p8/mermithid/${MERMITHID_TAG}/bin/this_phylloxera.sh" >> setup.sh &&\
-    mkdir -p /cvmfs/hep.pnnl.gov &&\
-    ln -sf /usr/local/p8 $CVMFS_PATH &&\
+    echo "source /usr/local/p8/katydid/${katydid_tag}/setup.sh" >> setup.sh &&\ 
+    echo "source /usr/local/p8/locust/${locust_tag}/setup.sh" >> setup.sh &&\ 
+    echo "source /usr/local/p8/mermithid/${mermithid_tag}/setup.sh" >> setup.sh &&\
+    echo "source /usr/local/p8/mermithid/${mermithid_tag}/bin/this_cicada.sh" >> setup.sh &&\
+    echo "source /usr/local/p8/mermithid/${mermithid_tag}/bin/this_phylloxera.sh" >> setup.sh &&\
     chmod 777 /usr/local/p8/katydid \
               /usr/local/p8/locust \
               /usr/local/p8/mermithid \
-              /usr/local/p8/katydid/$KATYDID_TAG \ 
-              /usr/local/p8/locust/$LOCUST_TAG \
-              /usr/local/p8/mermithid/$MERMITHID_TAG &&\
+              /usr/local/p8/katydid/$katydid_tag \ 
+              /usr/local/p8/locust/$locust_tag \
+              /usr/local/p8/mermithid/$mermithid_tag &&\
     /bin/true
