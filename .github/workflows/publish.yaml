@@ -122,6 +122,6 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
 
       - name: Push images
-        if: ${{ env.DO_DOCKER_PUSH }}
+        if: env.DO_DOCKER_PUSH
         run: |
           docker push -a ${{ env.REGISTRY }}/${{ github.repository }}
