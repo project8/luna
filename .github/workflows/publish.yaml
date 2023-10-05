@@ -12,7 +12,7 @@ env:
   REGISTRY: ghcr.io
   BASE_IMG_REPO: project8/luna_base
   BASE_IMG_TAG: v1.3.3
-  DO_DOCKER_PUSH: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
+#  DO_DOCKER_PUSH: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
 
 jobs:
 
@@ -122,6 +122,6 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
 
       - name: Push images
-        if: env.DO_DOCKER_PUSH
+        if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
         run: |
           docker push -a ${{ env.REGISTRY }}/${{ github.repository }}
