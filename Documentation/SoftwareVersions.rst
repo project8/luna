@@ -1,6 +1,14 @@
 Software Versions
 =================
 
+Luna v1.0.0
+------------
+
+* Locust_mc: v2.5.3
+* Katydid: v2.20.0
+* Mermithid: v1.2.2
+
+
 Luna v0.10.1
 ------------
 

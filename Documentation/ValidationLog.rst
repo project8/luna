@@ -43,6 +43,24 @@ Fixes:
 Log
 ---
 
+Version: 1.0.0
+~~~~~~~~~~~~~~~
+
+Release Date: October 5, 2023
+'''''''''''''''''''''''''''''''
+
+New Features:
+'''''''''''''
+
+* New Luna architecture
+* The singularity container has not been implemented
+* Containers are built with GitHub Actions and stored in the GitHub Container Registry
+* New Locust version: v2.5.3
+* New Katydid version: v2.20.0
+* New Mermithid version: v1.2.2
+* Psyllid has been removed
+
+
 Version: 0.10.2
 ~~~~~~~~~~~~~~~
 
