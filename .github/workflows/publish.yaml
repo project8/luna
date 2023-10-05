@@ -12,7 +12,6 @@ env:
   REGISTRY: ghcr.io
   BASE_IMG_REPO: project8/luna_base
   BASE_IMG_TAG: v1.3.3
-#  DO_DOCKER_PUSH: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
 
 jobs:
 
