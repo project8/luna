@@ -78,13 +78,6 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
-      - uses: actions-ecosystem/action-regex-match@v2
-        id: get_dir_name
-        with:
-          text: ${{ steps.docker_meta.outputs.tags[0] }}
-          regex: '^ghcr.io\/project8\/luna:(\S*)$'
-          flags: gm
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         
@@ -108,9 +101,6 @@ jobs:
         with:
           context: P8Compute/
           file: P8Compute/Dockerfile
-          #load: true #${{ ! env.DO_DOCKER_PUSH }}
-          #push: ${{ needs.init.outputs.do_push }}
-          #push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
             img_tag=${{ needs.init.outputs.luna_base_version }}
@@ -126,23 +116,12 @@ jobs:
         with:
           context: P8CJupyter/
           file: P8CJupyter/Dockerfile
-          #load: true #${{ ! env.DO_DOCKER_PUSH }}
-          #push: ${{ needs.init.outputs.do_push }}
-          #push: ${{ github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' ) }}
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
 
-#            img_tag=${{ steps.tag_name.outputs.tag }}
-
       - name: Push images
         if: ${{ env.DO_DOCKER_PUSH }}
         run: |
           docker push -a ${{ env.REGISTRY }}/${{ github.repository }}
-
-# For debugging
-      - name: Setup tmate session
-
-        if: ${{ ! success() }}
-        uses: mxschmitt/action-tmate@v3
