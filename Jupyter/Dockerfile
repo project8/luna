@@ -1,5 +1,5 @@
-ARG img_repo=ghcr.io/project8/luna_base
-ARG img_tag=v1.3.3
+ARG img_repo=ghcr.io/project8/luna
+ARG img_tag=v1.0.0
 
 FROM ${img_repo}:${img_tag}
 
