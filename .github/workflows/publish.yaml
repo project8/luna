@@ -99,8 +99,8 @@ jobs:
         id: build
         uses: docker/build-push-action@v2
         with:
-          context: P8Compute/
-          file: P8Compute/Dockerfile
+          context: Main/
+          file: Main/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
             img_tag=${{ needs.init.outputs.luna_base_version }}
@@ -114,8 +114,8 @@ jobs:
         id: build_jupyter
         uses: docker/build-push-action@v2
         with:
-          context: P8CJupyter/
-          file: P8CJupyter/Dockerfile
+          context: Jupyter/
+          file: Jupyter/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
