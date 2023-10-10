@@ -11,7 +11,7 @@ on:
 env:
   REGISTRY: ghcr.io
   BASE_IMG_REPO: project8/luna_base
-  BASE_IMG_TAG: v1.3.3
+  BASE_IMG_TAG: v1.3.4
 
 jobs:
 
@@ -29,21 +29,25 @@ jobs:
         run: |
           git clone https://github.com/project8/luna_base.git
           cd luna_base
+          git checkout main
           echo "::set-output name=luna_base_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/katydid.git
           cd katydid
+          git checkout main
           echo "::set-output name=katydid_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/locust_mc.git
           cd locust_mc
+          git checkout master
           echo "::set-output name=locust_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/mermithid.git
           cd mermithid
+          git checkout main
           echo "::set-output name=mermithid_version::$(git describe --abbrev=0 --tags)"
           cd ..
 
@@ -52,6 +56,17 @@ jobs:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: [init]
+
+    strategy:
+      matrix:
+        build: [Dev, Prod]
+        fail-fast: [false]
+        include:
+          - build: Dev
+            tag-suffix: '-dev'
+          - build: Prod
+            tag-suffix: ''
+
     steps:
     
       - name: Check out the repo
@@ -105,9 +120,13 @@ jobs:
             img_tag=${{ needs.init.outputs.luna_base_version }}
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
-            mermithid_tag=${{ needs.init.outputs.mermithid_version }}
             p8compute_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+            tag_suffix=${{ matrix.tag-suffix }}
           tags: ${{ steps.docker_meta.outputs.tags }}
+          platforms: linux/amd64
+#          platforms: linux/amd64,linux/arm64
+
+#            mermithid_tag=${{ needs.init.outputs.mermithid_version }}${{ matrix.tag-suffix }}
 
       - name: Build Luna-Jupyter
         id: build_jupyter
@@ -119,6 +138,8 @@ jobs:
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
+          platforms: linux/amd64
+#          platforms: linux/amd64,linux/arm64
 
       - name: Push images
         if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
