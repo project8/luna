@@ -142,7 +142,7 @@ jobs:
           file: Jupyter/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
-            img_tag=${{ steps.tag_name.outputs.tag }}${{ matrix.tag-suffix }}
+            img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
