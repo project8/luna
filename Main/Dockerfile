@@ -1,3 +1,5 @@
+# _tag arguments should _not_ include the suffix, e.g. -dev
+
 ARG img_repo=ghcr.io/project8/luna_base
 ARG img_tag=v1.3.3
 
@@ -8,17 +10,18 @@ ARG locust_tag=v2.5.3
 ARG kassiopeia_tag=v4.0.0
 #ARG mermithid_repo=docker.io/project8/mermithid
 #ARG mermithid_tag=v1.2.2
+ARG tag_suffix=''
 
 # Katydid
-FROM ${katydid_repo}:${katydid_tag} AS katydid
+FROM ${katydid_repo}:${katydid_tag}${tag_suffix} AS katydid
 
 # Locust
-FROM ${locust_repo}:${locust_tag} AS locust
+FROM ${locust_repo}:${locust_tag}${tag_suffix} AS locust
 
 # Mermithid
-#FROM ${mermithid_repo}:${mermithid_tag} AS mermithid
+#FROM ${mermithid_repo}:${mermithid_tag}${tag_suffix} AS mermithid
 
-FROM ${img_repo}:${img_tag}
+FROM ${img_repo}:${img_tag}${tag_suffix}
 
 # We repeat the version ARGs here so that we get their values from the pre-FROM ARGs
 ARG katydid_tag

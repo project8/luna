@@ -113,10 +113,11 @@ jobs:
           file: Main/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
-            img_tag=${{ needs.init.outputs.luna_base_version }}${{ matrix.tag-suffix }}
-            locust_tag=${{ needs.init.outputs.locust_version }}${{ matrix.tag-suffix }}
-            katydid_tag=${{ needs.init.outputs.katydid_version }}${{ matrix.tag-suffix }}
-            p8compute_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}${{ matrix.tag-suffix }}
+            img_tag=${{ needs.init.outputs.luna_base_version }}
+            locust_tag=${{ needs.init.outputs.locust_version }}
+            katydid_tag=${{ needs.init.outputs.katydid_version }}
+            p8compute_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+            tag_suffix=${{ matrix.tag-suffix }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
