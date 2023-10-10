@@ -118,6 +118,8 @@ jobs:
             katydid_tag=${{ needs.init.outputs.katydid_version }}${{ matrix.tag-suffix }}
             p8compute_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}${{ matrix.tag-suffix }}
           tags: ${{ steps.docker_meta.outputs.tags }}
+          platforms: linux/amd64
+#          platforms: linux/amd64,linux/arm64
 
 #            mermithid_tag=${{ needs.init.outputs.mermithid_version }}${{ matrix.tag-suffix }}
 
@@ -131,6 +133,8 @@ jobs:
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
+          platforms: linux/amd64
+#          platforms: linux/amd64,linux/arm64
 
       - name: Push images
         if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
