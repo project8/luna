@@ -29,21 +29,25 @@ jobs:
         run: |
           git clone https://github.com/project8/luna_base.git
           cd luna_base
+          git checkout main
           echo "::set-output name=luna_base_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/katydid.git
           cd katydid
+          git checkout main
           echo "::set-output name=katydid_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/locust_mc.git
           cd locust_mc
+          git checkout master
           echo "::set-output name=locust_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
           git clone https://github.com/project8/mermithid.git
           cd mermithid
+          git checkout main
           echo "::set-output name=mermithid_version::$(git describe --abbrev=0 --tags)"
           cd ..
 
