@@ -92,6 +92,12 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
+      - name: Get previous tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        id: tag_name
+        with:
+          fallback: beta
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         
@@ -120,7 +126,7 @@ jobs:
             img_tag=${{ needs.init.outputs.luna_base_version }}
             locust_tag=${{ needs.init.outputs.locust_version }}
             katydid_tag=${{ needs.init.outputs.katydid_version }}
-            p8compute_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+            p8compute_tag=${{ steps.tag_name.outputs.tag }}
             tag_suffix=${{ matrix.tag-suffix }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           platforms: linux/amd64
@@ -136,7 +142,7 @@ jobs:
           file: Jupyter/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
-            img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+            img_tag=${{ steps.tag_name.outputs.tag }}${{ matrix.tag-suffix }}
           tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
