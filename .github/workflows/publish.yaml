@@ -53,7 +53,7 @@ jobs:
 
   publish:
 
-    name: Push Docker image to Docker Hub
+    name: Build and push the Luna Docker image
     runs-on: ubuntu-latest
     needs: [init]
 
@@ -117,7 +117,7 @@ jobs:
           
       - name: Build Luna
         id: build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: Main/
           file: Main/Dockerfile
@@ -134,16 +134,82 @@ jobs:
 
 #            mermithid_tag=${{ needs.init.outputs.mermithid_version }}${{ matrix.tag-suffix }}
 
+      - name: Save images
+        run: |
+          docker save -o luna.tar ${{ steps.docker_meta.outputs.tags }}
+
+      - name: Cache images
+        uses: actions/upload-artifact@v3
+        with:
+          name: luna-images
+          path: luna.tar
+
+      - name: Push images
+        if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
+        run: |
+          docker push -a ${{ env.REGISTRY }}/${{ github.repository }}
+
+  jupyter:
+
+    name: Build and push the Jupyter Docker image
+    runs-on: ubuntu-latest
+    needs: [publish]
+
+    strategy:
+      matrix:
+        build: [Dev, Prod]
+        fail-fast: [false]
+        include:
+          - build: Dev
+            tag-suffix: '-dev'
+          - build: Prod
+            tag-suffix: ''
+
+    steps:
+    
+      - name: Check out the repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Re-run this action to get the jupyter tags
+      # type=semver,pattern={{raw}} -- used only on push tag events; gives us the `vX.Y.Z`` tag
+      # ref,event=branch -- used only on pull_request events; gives us a `pr-X`` tag
+      # ref, event=pr -- used only on push events; gives us main and develop tags
+      # ref, raw,value=latest,... -- restricted to only main-branch push events; gives us the `latest` tag
+      - name: Docker meta
+        id: docker_meta_jupyter
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
+          flavor: |
+            latest=auto
+            suffix=${{ matrix.tag-suffix }}-jupyter,onlatest=true
+          tags: |
+            type=semver,pattern={{raw}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+
+      - name: Extract images from Cache
+        uses: actions/download-artifact@v3
+        with:
+          name: luna-images
+
+      - name: Load images
+        run: |
+          docker load --input luna.tar
+
       - name: Build Luna-Jupyter
         id: build_jupyter
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v5
         with:
           context: Jupyter/
           file: Jupyter/Dockerfile
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
-          tags: ${{ steps.docker_meta.outputs.tags }}-jupyter
+          tags: ${{ steps.docker_meta_jupyter.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
 
