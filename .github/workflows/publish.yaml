@@ -203,7 +203,11 @@ jobs:
       - name: Get base image tag
         id: get_base_tag
         run: |
-          echo "base_tag_for_jupyter=${${{ env.DOCKER_METADATA_OUTPUT_VERSION }}%'-jupyter'}" >> $GITHUB_OUTPUT
+          suffix="-jupyter"
+          tag="${{ env.DOCKER_METADATA_OUTPUT_VERSION }}"
+          stripped=${tag%$suffix}
+          echo "base_tag_for_jupyter=$stripped" >> $GITHUB_OUTPUT
+          echo $stripped
           
       - name: Build Luna-Jupyter
         id: build_jupyter
