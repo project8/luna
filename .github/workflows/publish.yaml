@@ -122,6 +122,7 @@ jobs:
           context: Main/
           file: Main/Dockerfile
           push: false
+          load: true
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ env.BASE_IMG_REPO }}
             img_tag=${{ needs.init.outputs.luna_base_version }}
@@ -216,6 +217,7 @@ jobs:
           context: Jupyter/
           file: Jupyter/Dockerfile
           push: false
+          load: true
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
             img_tag=${{ steps.get_base_tag.outputs.base_tag_for_jupyter }}
