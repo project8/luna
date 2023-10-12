@@ -131,18 +131,9 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
+          cache-to: type=gha
 
 #            mermithid_tag=${{ needs.init.outputs.mermithid_version }}${{ matrix.tag-suffix }}
-
-      - name: Save images
-        run: |
-          docker save -o luna.tar ${{ steps.docker_meta.outputs.tags }}
-
-      - name: Cache images
-        uses: actions/upload-artifact@v3
-        with:
-          name: luna-images
-          path: luna.tar
 
       - name: Push images
         if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
@@ -191,15 +182,6 @@ jobs:
             type=ref,event=pr
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
 
-      - name: Extract images from Cache
-        uses: actions/download-artifact@v3
-        with:
-          name: luna-images
-
-      - name: Load images
-        run: |
-          docker load --input luna.tar
-
       - name: Build Luna-Jupyter
         id: build_jupyter
         uses: docker/build-push-action@v5
@@ -212,6 +194,7 @@ jobs:
           tags: ${{ steps.docker_meta_jupyter.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
 
       - name: Push images
         if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
