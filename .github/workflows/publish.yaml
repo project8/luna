@@ -199,6 +199,11 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get base image tag
+        id: get_base_tag
+        run: |
+          echo "base_tag_for_jupyter=${${{ env.DOCKER_METADATA_OUTPUT_VERSION }}%'-jupyter'}" >> $GITHUB_OUTPUT
           
       - name: Build Luna-Jupyter
         id: build_jupyter
@@ -209,7 +214,7 @@ jobs:
           push: false
           build-args: |
             img_repo=${{ env.REGISTRY }}/${{ github.repository }}
-            img_tag=${{ env.DOCKER_METADATA_OUTPUT_VERSION }}
+            img_tag=${{ steps.get_base_tag.outputs.base_tag_for_jupyter }}
           tags: ${{ steps.docker_meta_jupyter.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
