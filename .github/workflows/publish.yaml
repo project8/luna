@@ -133,7 +133,6 @@ jobs:
           tags: ${{ steps.docker_meta.outputs.tags }}
           platforms: linux/amd64
 #          platforms: linux/amd64,linux/arm64
-          cache-to: type=gha
 
 #            mermithid_tag=${{ needs.init.outputs.mermithid_version }}${{ matrix.tag-suffix }}
 
@@ -147,6 +146,7 @@ jobs:
     name: Build and push the Jupyter Docker image
     runs-on: ubuntu-latest
     needs: [publish]
+    if: github.event_name == 'push' && ( contains(github.ref, 'refs/tags/') || github.ref == 'refs/heads/develop' )
 
     strategy:
       matrix:
