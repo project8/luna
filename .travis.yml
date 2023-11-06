@@ -1,0 +1,15 @@
+language: minimal
+
+services:
+- docker
+
+env:
+  global:
+    - secure: YgKlCw4JX5AFbjUG1nckQcQeuXK2ZJaD4qEALBTBAvBNulKlKBhaSYTH8z5IeNqO9aMb7YOdj7ZLMGj5eRHD533Gv9ce1iCvekeMkxInhGXeHQGefp1BUFM+3Hsudjgcvm7ir4AzfyGtscSuS9PB9KWW+gUnU/etTnGHkO40R8A/M/K+UXt9kse/A42/NDx97s6LlMhJ6qSN5YjCyaPn4+EZwz7Ds3cabdbkqNP6zSdDKr8Y6CjxyvPk7rJq/iOJ8PxkI8z7OnouxEZK0WqlP+EN2hGOGjnWqwT3eeM6PFKVMQSdwhZckFlbVJzqM3V4rlKcX0JFhhOPP6uAh6+X/GxOngzqguF4h2A5iHOXdMvcXqfUvMpQjXugrxXperwfVswB2m9v/TLkqeVFlSZOW/DOKxEy2UtLZDyCiFql1GMED8Is+4nbk3Gqhnqpowrzx/qLEQ4O9uWlmPtAphb66UEF+30Rta03DmSJeY+bHaWtPwb8ATb+6fsGT2bXSG27UrOIEtF8M1J9oVhhS3UXMK8/4clC6N3N4RLX/MKbZtTuatrMNCE5VOkPkaMUkF7w0OcUgLPMOBjqyUWljNZn2D8euxk0v1sq7LtdKFvRX11MnjC5WZOCAEd8k48SxItXqTgJkRTMGxyhEl0KVBwx/3VzrHbYI+jbDEuBB6yKjsI=
+    - DOCKER_USERNAME=p8dockergremlin
+
+script:
+  - docker build -t project8/p8compute:travis-test -f P8Compute/Dockerfile .
+  - echo $DOCKER_USERNAME
+  - echo $DOCKER_PASSWORD | docker login --username $DOCKER_USERNAME --password-stdin
+  - docker push project8/p8compute:travis-test
