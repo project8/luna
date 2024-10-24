@@ -4,7 +4,7 @@ name: Publish
 on:
   pull_request:
   push:
-    branches: [main, develop]
+    branches: [main, develop, feature/katydidtest]
     tags: ['*']
   workflow_dispatch:
 
@@ -35,7 +35,7 @@ jobs:
           
           git clone https://github.com/project8/katydid.git
           cd katydid
-          git checkout main
+          git checkout feature/context
           echo "::set-output name=katydid_version::$(git describe --abbrev=0 --tags)"
           cd ..
           
